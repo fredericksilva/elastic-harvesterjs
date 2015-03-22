@@ -1,6 +1,6 @@
 ---
-layout: default
-title: "Jekyll Docs Template"
+layout: page
+title: "Elastic Harvester.js"
 ---
 
 ### Get Started
