@@ -6,3 +6,6 @@ node_modules
 .DS_Store
 *.stephen
 *.test-created.mapping.json
+*.sw?
+_site
+_pages
