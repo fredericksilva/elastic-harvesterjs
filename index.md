@@ -3,16 +3,10 @@ layout: default
 title: "Elastic Harvester.js"
 ---
 
-### Get Started
+# Elastic-Harvest
 
-Start by [creating a new post](http://jekyllrb.com/docs/posts/) one of the categories listed in `_config.yml`. It will appear in the navigation on the left once recompiled. Or use the supplied script to make creating pages easier:
+Elastic-Harvest is a Nodejs implementation of the [JSON API Search Profile](https://github.com/agco/agco-json-api-profiles).
 
-```bash
-ruby bin/jekyll-page "Some Page Title" ref
-```
+This library ties together [harvester.js](https://github.com/agco/harvesterjs) and elasticsearch to offer the required [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md) features.
 
-#### Don't Forget
-
-- Add your own content to this page (i.e. `index.md`) and change the `title`
-- Change `title` and `subtitle` defined in `config.yml` for your site
-- Set the `baseurl` in `_config.yml` for your repo if deploying to GitHub pages
+Apart from that it also provides a number of helper functions to synchronize harvester.js/mongoDB resources with an elasticsearch backend.
