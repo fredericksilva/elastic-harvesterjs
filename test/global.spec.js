@@ -14,7 +14,6 @@ before(function (done) {
 after(function (done) {
     this.app
         .then(function (harvesterApp) {
-            harvesterApp.router.close();
             this.app = null;
         })
         .finally(function () {

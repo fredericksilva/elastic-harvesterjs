@@ -180,7 +180,7 @@ module.exports = function(baseUrl,keys,ids,ES_INDEX_WAIT_TIME) {
                         .end(function (error, response) {
                             should.not.exist(error);
                             var body = JSON.parse(response.text);
-                            should.not.exist(body[keys.person][0].links);
+                            body[keys.person][0].links.pets.length.should.equal(0   );
                             resolve(done());
                         });
                 })

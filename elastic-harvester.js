@@ -1047,6 +1047,8 @@ ElasticHarvest.prototype.expandAndSync = function (models) {
 
 //sync: will push model to elastic search WITHOUT expanding any links.
 ElasticHarvest.prototype.sync = function(model){
+    delete model._id;
+    delete model.__v;
     var esBody = JSON.stringify(model);
     var _this = this;
     var options = {uri: this.es_url + '/'+this.index+'/'+this.type+'/' + model.id, body: esBody,pool:postPool};
@@ -1087,11 +1089,16 @@ ElasticHarvest.prototype.expandEntity = function (entity,depth,currentPath){
     _.each(entity.links || {}, function(val,key,list){
         var collectionName = _this.collectionLookup[key];
         if(collectionName) {
-            var findFnName = "find";
-            if(_.isArray(entity.links[key])){
-                findFnName = "findMany";
+            var findFnName = "findById";
+            var query = entity.links[key];
+            if(_.isArray(query)){
+                findFnName = "find";
+                query = {_id: {$in: query}};
             }
-            promises[key] = _this.adapter[findFnName](collectionName, entity.links[key]).then(function(result){
+            var model = _this.adapter._models[collectionName];
+            promises[key] = model[findFnName](query).exec()
+            .then(makePOJO)
+            .then(function(result){
 
                 if(depth>0){
                     entity[key] = result;
@@ -1256,6 +1263,22 @@ function getCollectionLookup(harvest_app,type){
 
     getLinkedSchemas(startingSchema);
     return retVal;
+}
+
+function makePOJO(result) {
+    if (_.isArray(result)) {
+        return result.map(function(doc) {
+            doc = doc.toObject({virtuals: true});
+            delete doc.__v;
+            delete doc._id;
+            return doc;
+        });
+    } else {
+        result = result.toObject({virtuals: true});
+        delete result.__v;
+        delete result._id;
+        return result;
+    }
 }
 
 module.exports = ElasticHarvest;
